@@ -20,11 +20,12 @@ private:
     std::vector<Passageiro*> passageiros;
     std::vector<Viagem*> viagens;
 public:
+    std::vector<Trajeto*> melhorTrajeto(Cidade* origem, Cidade* destino);
     void cadastrarCidade(std::string nome);
     void cadastrarTrajeto(std::string nomeOrigem, std::string nomeDestino, char tipo, int distancia);
     void cadastrarTransporte(std::string nome, char tipo, int capacidade, int velocidade, int distancia_entre_descansos, int tempo_de_descanso, std::string localAtual);
     void cadastrarPassageiro(std::string nome, std::string localAtual);
-    void iniciarViagem(std::string nomeTransporte, std::vector<std::string> nomesPassageiros, std::string nomeOrigem, std::string nomeDestino);
+    void iniciarViagem(int idTransporte, std::vector<int> idsPassageiros, std::string nomeOrigem, std::string nomeDestino);
     void avancarHoras(int horas);
     void relatarEstado();
 };

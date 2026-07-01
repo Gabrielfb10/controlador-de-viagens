@@ -10,6 +10,8 @@
 
 class Transporte {
 private:
+    static int contadorID;
+    int id;
     std::string nome;
     char tipo;
     int capacidade;
@@ -18,7 +20,10 @@ private:
     int tempo_de_descanso_atual;
     Cidade* localAtual;
 public:
-    Trasporte(std::string nome, char tipo, int capacidade, int velocidade, int distancia_entre_descansos, int tempo_de_descanso_atual, Cidade* localAtual);
+    Transporte(std::string nome, char tipo, int capacidade, int velocidade, int distancia_entre_descansos, int tempo_de_descanso_atual, Cidade* localAtual);
+    Transporte(int idExistente, std::string nome, char tipo, int capacidade, int velocidade, int distancia_entre_descansos, int tempo_de_descanso_atual, Cidade* localAtual);
+    int getId() const;
+    static void setContadorID(int novoValor);
     std::string getNome();
     int getCapacidade();
     int getVelocidade();
