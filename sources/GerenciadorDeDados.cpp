@@ -59,7 +59,7 @@ std::vector<Passageiro*> GerenciadorDeDados::carregarPassageiros(std::string nom
 
         //Acessa o objeto da cidade e depois cria o objeto do passageiro.
         Cidade* localAtual = mapaCidades[local];
-        if (localAtual) {
+        if (localAtual || local.empty()) {
             Passageiro* novoPassageiro = new Passageiro(id, nome, localAtual);
             passageiros.push_back(novoPassageiro);
         }

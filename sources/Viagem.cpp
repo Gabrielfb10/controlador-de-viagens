@@ -111,7 +111,7 @@ void Viagem::avancarHoras() {
 }
 
 void Viagem::relatarEstado() {
-    std::cout << "--- STATUS DA VIAGEM " << this->id << " ---\n";
+    std::cout << "\n--- STATUS DA VIAGEM " << this->id << " ---\n";
     std::cout << "Origem: " << this->origem->getNome() << " | Destino: " << this->destino->getNome() << "\n";
 
     if (this->emAndamento) {
