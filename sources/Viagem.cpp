@@ -85,7 +85,16 @@ void Viagem::avancarHoras() {
         }
     } else {
         this->horasEmTransito += 1;
-        int distSendoPercorrida = std::min(this->distancia, this->transporte->getVelocidade());
+
+        int maxDistanciaPossivel = this->transporte->getVelocidade();
+        if (this->transporte->getDistanciaEnteDescansos() > 0) {
+            int distanciaAteDescanso = this->transporte->getDistanciaEnteDescansos() - this->transporte->getDistanciaPercorrida();
+            if (distanciaAteDescanso < maxDistanciaPossivel) {
+                maxDistanciaPossivel = distanciaAteDescanso;
+            }
+        }
+
+        int distSendoPercorrida = std::min(this->distancia, maxDistanciaPossivel);
         this->distancia -= distSendoPercorrida;
         this->transporte->adicionarDistancia(distSendoPercorrida);
         
@@ -116,6 +125,7 @@ void Viagem::relatarEstado() {
 
     if (this->emAndamento) {
         std::cout << "Estado: Em andamento (" << this->horasEmTransito << " horas de viagem decorridas)\n";
+        std::cout << "Distancia restante: " << this->distancia << " km\n";
         std::cout << "Transporte: " << this->transporte->getNome() << "\n";
         std::cout << "Passageiros (" << this->passageiros.size() << "):\n";
         for (int i = 0; i < this->passageiros.size(); i++) {

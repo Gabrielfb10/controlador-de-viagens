@@ -89,7 +89,7 @@ int main() {
                 getline(cin, destino);
                 cout << "Tipo do trajeto (letra): ";
                 cin >> tipo;
-                cout << "Distancia: ";
+                cout << "Distancia (km): ";
                 cin >> distancia;
                 limparBuffer();
                 controlador.cadastrarTrajeto(origem, destino, tipo, distancia);
@@ -103,13 +103,13 @@ int main() {
                 getline(cin, nome);
                 cout << "Tipo (A ou T): ";
                 cin >> tipo;
-                cout << "Capacidade: ";
+                cout << "Capacidade (passageiros): ";
                 cin >> capacidade;
-                cout << "Velocidade: ";
+                cout << "Velocidade (km/h): ";
                 cin >> velocidade;
-                cout << "Distancia entre descansos: ";
+                cout << "Distancia entre descansos (km): ";
                 cin >> distDescanso;
-                cout << "Tempo de descanso: ";
+                cout << "Tempo de descanso (horas): ";
                 cin >> tempoDescanso;
                 limparBuffer();
                 cout << "--- Cidades disponiveis ---\n";
@@ -176,7 +176,7 @@ int main() {
             }
             case 6: {
                 int horas;
-                cout << "Horas para avancar: ";
+                cout << "Horas para avancar (h): ";
                 cin >> horas;
                 limparBuffer();
                 controlador.avancarHoras(horas);
@@ -196,7 +196,7 @@ int main() {
                 break;
             }
             case 0:
-                cout << "As informações não salvas serão perdidas. Saindo do sistema...\n";
+                cout << "As informacoes nao salvas serao perdidas. Saindo do sistema...\n";
                 break;
             default:
                 cout << "Opcao invalida. Tente novamente.\n";
