@@ -9,12 +9,13 @@
 
 class Trajeto {
 private:
-    Cidade* origem;
-    Cidade* destino;
-    char tipo;
-    int distancia;
+    Cidade* origem;      // Cidade de partida
+    Cidade* destino;     // Cidade de chegada
+    char tipo;           // Tipo de trajeto (ex: 'T' Terrestre, 'A' Aquático)
+    int distancia;       // Distância do trajeto em km
 public:
     Trajeto(Cidade* origem, Cidade* destino, char tipo, int distancia);
+    
     Cidade* getOrigem();
     Cidade* getDestino();
     char getTipo();

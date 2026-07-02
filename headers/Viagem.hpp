@@ -17,19 +17,32 @@ private:
     std::vector<Passageiro*> passageiros;
     Cidade* origem;
     Cidade* destino;
-    Viagem *proxima;
-    int horasEmTransito;
-    int distancia;
-    bool emAndamento;
-    bool ocorreu;
+    Viagem *proxima;            // Ponteiro para a próxima viagem (conexão)
+    int horasEmTransito;        // Horas já gastas na viagem
+    int distancia;              // Distância total da viagem
+    bool emAndamento;           // Indica se a viagem começou e ainda não terminou
+    bool ocorreu;               // Indica se a viagem já foi concluída
 public:
+    // Cria uma nova viagem sem conexão
     Viagem(Transporte* transporte, std::vector<Passageiro*> passageiros, Cidade* origem, Cidade* destino);
+    // Cria uma viagem já estabelecendo uma conexão
     Viagem(Transporte* transporte, std::vector<Passageiro*> passageiros, Cidade* origem, Cidade* destino, int distancia, Viagem* proxima);
-    Viagem(int idExistente, Transporte* transporte, std::vector<Passageiro*> passageiros, Cidade* origem, Cidade* destino, Viagem* proxima, int horasEmTransito, bool emAndamento, bool ocorreu);
+    // Cria uma viagem a partir de dados salvos
+    Viagem(int idExistente, Transporte* transporte, std::vector<Passageiro*> passageiros, Cidade* origem, Cidade* destino, Viagem* proxima, int horasEmTransito, bool emAndamento, bool ocorreu, int distancia);
+    
+    // Métodos de controle do ciclo de vida da viagem
     void iniciarViagem();
     void avancarHoras();
     void relatarEstado();
+    
     int getId() const;
+    Transporte* getTransporte();
+    std::vector<Passageiro*> getPassageiros();
+    Cidade* getOrigem();
+    Cidade* getDestino();
+    Viagem* getProxima();
+    int getHorasEmTransito();
+    int getDistancia();
     void setProxima(Viagem* proxima);
     static void setContadorID(int novoValor);
     void setEmAndamento(bool estado);

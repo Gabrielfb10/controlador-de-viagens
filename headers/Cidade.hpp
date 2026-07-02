@@ -9,10 +9,12 @@
 
 class Cidade {
 private:
-    std::string nome;
+    std::string nome; // Nome da cidade
 public:
+    // Construtor
     Cidade(std::string nome);
 
+    // Retorna o nome da cidade
     std::string getNome();
 };
 
