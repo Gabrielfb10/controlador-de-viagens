@@ -12,6 +12,8 @@ Transporte::Transporte(std::string nome, char tipo, int capacidade, int velocida
     this->distancia_entre_descansos = distancia_entre_descansos;
     this->tempo_de_descanso_atual = tempo_de_descanso_atual;
     this->localAtual = localAtual;
+    this->distancia_percorrida = 0;
+    this->horas_descansadas = 0;
 }
 
 Transporte::Transporte(int idExistente, std::string nome, char tipo, int capacidade, int velocidade, int distancia_entre_descansos, int tempo_de_descanso_atual, Cidade *localAtual) {
@@ -23,6 +25,8 @@ Transporte::Transporte(int idExistente, std::string nome, char tipo, int capacid
     this->distancia_entre_descansos = distancia_entre_descansos;
     this->tempo_de_descanso_atual = tempo_de_descanso_atual;
     this->localAtual = localAtual;
+    this->distancia_percorrida = 0;
+    this->horas_descansadas = 0;
 }
 
 int Transporte::getId() const {
@@ -35,6 +39,10 @@ void Transporte::setContadorID(int novoValor) {
 
 std::string  Transporte::getNome() {
     return this->nome;
+}
+
+char Transporte::getTipo() {
+    return this->tipo;
 }
 
 int Transporte::getCapacidade() {
@@ -60,4 +68,33 @@ Cidade* Transporte::getLocalAtual() {
 
 void Transporte::setLocalAtual(Cidade* local) {
     this->localAtual = local;
+}
+
+int Transporte::getDistanciaPercorrida() {
+    return this->distancia_percorrida;
+}
+
+void Transporte::setDistanciaPercorrida(int dist) {
+    this->distancia_percorrida = dist;
+}
+
+void Transporte::adicionarDistancia(int dist) {
+    this->distancia_percorrida += dist;
+}
+
+int Transporte::getHorasDescansadas() {
+    return this->horas_descansadas;
+}
+
+void Transporte::setHorasDescansadas(int horas) {
+    this->horas_descansadas = horas;
+}
+
+void Transporte::adicionarHoraDescanso() {
+    this->horas_descansadas++;
+}
+
+void Transporte::resetarDescanso() {
+    this->distancia_percorrida = 0;
+    this->horas_descansadas = 0;
 }

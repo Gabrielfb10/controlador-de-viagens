@@ -16,7 +16,7 @@ struct NoBusca {
     }
 };
 
-std::vector<Trajeto*> ControladorDeTransito::melhorTrajeto(Cidade* origem, Cidade* destino) {
+std::vector<Trajeto*> ControladorDeTransito::melhorTrajeto(Cidade* origem, Cidade* destino, char tipoTransporte) {
 
     //Cria um hash_map para armazenar as informações do algoritmo de Dijkstra
     std::unordered_map<Cidade*, NoBusca> mapaCidades;
@@ -57,8 +57,8 @@ std::vector<Trajeto*> ControladorDeTransito::melhorTrajeto(Cidade* origem, Cidad
         //Busca dos vizinhos, ou seja, cidades que recebem trajeto desse local
         for (Trajeto* t : this->trajetos) {
             
-            //Validação para confirmar que o trajeto parte da cidade que está sendo analisada
-            if (t->getOrigem() == cidadeAtual) {
+            //Validação para confirmar que o trajeto parte da cidade que está sendo analisada e possui o tipo compatível
+            if (t->getOrigem() == cidadeAtual && t->getTipo() == tipoTransporte) {
                 Cidade* vizinho = t->getDestino();
                 int pesoDoTrajeto = t->getDistancia();
 
@@ -252,8 +252,27 @@ void ControladorDeTransito::iniciarViagem(int idTransporte, std::vector<int> ids
         return;
     }
 
-    //Chama a função que busca o melhor trajeto
-    std::vector<Trajeto*> trajeto = melhorTrajeto(cidadeOrigem, cidadeDestino);
+    //Checa a localização do transporte e capacidade antes de criar a viagem
+    if (transporte->getLocalAtual() != cidadeOrigem) {
+        std::cout << "ERRO: O transporte '" << transporte->getNome() << "' nao esta na cidade de origem (" << cidadeOrigem->getNome() << "). A viagem nao foi criada.\n";
+        return;
+    }
+
+    if (transporte->getCapacidade() < passageirosViagem.size()) {
+        std::cout << "ERRO: Capacidade insuficiente do transporte para o numero de passageiros. A viagem nao foi criada.\n";
+        return;
+    }
+
+    //Checa se todos os passageiros estao na cidade de origem
+    for (int i = 0; i < passageirosViagem.size(); i++) {
+        if (passageirosViagem[i]->getLocalAtual() != cidadeOrigem) {
+            std::cout << "ERRO: O passageiro '" << passageirosViagem[i]->getNome() << "' (ID: " << passageirosViagem[i]->getId() << ") nao esta na cidade de origem (" << cidadeOrigem->getNome() << "). A viagem nao foi criada.\n";
+            return;
+        }
+    }
+
+    //Chama a função que busca o melhor trajeto compatível com o tipo de transporte
+    std::vector<Trajeto*> trajeto = melhorTrajeto(cidadeOrigem, cidadeDestino, transporte->getTipo());
 
     //Checa se algum trajeto foi encontrado
     if (trajeto.empty()) {
@@ -291,13 +310,34 @@ void ControladorDeTransito::iniciarViagem(int idTransporte, std::vector<int> ids
 }
 
 void ControladorDeTransito::avancarHoras(int horas) {
-    for (int i = 1; i <= horas; i++) {
-        for (int i =viagens.size()-1; i >= 0;i--) {
-            if (viagens[i]->isEmAndamento()) {
+    std::cout << "\n===================================================\n";
+    std::cout << "               AVANCANDO O TEMPO (" << horas << "h)              \n";
+    std::cout << "===================================================\n";
+    for (int h = 1; h <= horas; h++) {
+        std::cout << "\n--- HORA " << h << " ---\n";
+        bool teveAcao = false;
+        
+        // Salva o estado de quem estava rodando no INICIO da hora.
+        // Isso impede que viagens iniciadas no meio desta hora viajem imediatamente.
+        std::vector<bool> rodandoNoInicioDaHora(viagens.size());
+        for (int i = 0; i < viagens.size(); i++) {
+            rodandoNoInicioDaHora[i] = viagens[i]->isEmAndamento();
+        }
+
+        // Itera para frente, assim os logs aparecem em ordem crescente (do ID menor pro maior)
+        for (int i = 0; i < viagens.size(); i++) {
+            if (rodandoNoInicioDaHora[i]) {
                 viagens[i]->avancarHoras();
+                teveAcao = true;
             }
         }
+        
+        if (!teveAcao) {
+            std::cout << " Nenhuma viagem em andamento no momento.\n";
+            break; 
+        }
     }
+    std::cout << "===================================================\n";
 }
 
 void ControladorDeTransito::relatarEstado() {
@@ -322,6 +362,13 @@ void ControladorDeTransito::relatarEstado() {
     //Percorre o vetor listando o status de cada viagem
     for (int i = 0; i < viagens.size(); i++) {
         viagens[i]->relatarEstado();
+        if (viagens[i]->isEmAndamento()) {
+            rodando++;
+        } else if (viagens[i]->isOcorreu()) {
+            concluidas++;
+        } else {
+            aguardando++;
+        }
     }
 
     std::cout << "\n--- RESUMO DO SISTEMA ---\n";
