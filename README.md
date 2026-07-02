@@ -5,6 +5,7 @@ Projeto em C++ para controle e gerenciamento de viagens.
 ## Como Executar
 
 ### Pré-requisitos
+- Baixar a pasta do projeto e extrair a pasta do arquivo zip.
 - Um compilador C++ (`g++` / MinGW no Windows ou GCC no Linux/Mac).
 - (Opcional) utilitário `make`.
 
